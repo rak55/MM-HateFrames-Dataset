@@ -1,0 +1,33 @@
+response_format:
+  type: "json_schema"
+  json_schema:
+    name: rel
+    schema:
+      type: object
+      properties:
+        relations:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - paraphrases
+                  - contradicts
+                  - specializes
+              reasoning:
+                type: string
+                description: Explanation for the relation.
+              x:
+                type: integer
+              y:
+                type: integer
+            required:
+              - x
+              - y
+              - reasoning
+            additionalProperties: false
+      required:
+        - relations
+      additionalProperties: false

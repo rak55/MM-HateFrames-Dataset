@@ -1,0 +1,130 @@
+seed: 0
+delay: 1
+model: gpt-5-mini-2025-08-07
+max_tokens: 1024
+temperature: 1.0
+response_format:
+  type: "json_schema"
+  json_schema:
+    name: problems_hate
+    schema:
+      type: object
+      properties:
+        hate_problems:
+          type: object
+          properties:
+            targets:
+              type: array
+              items:
+                type: string
+                description: Target group affected by hate.
+                enum:
+                  - Race/Ethnicity (Demographics)
+                  - Nationality/Region/Citizenship (Demographics)
+                  - Religion/Belief (Demographics)
+                  - Gender/Sex/Sexual Orientation (Demographics)
+                  - Disability (Demographics)
+                  - Age (Demographics)
+                  - Appearance (Demographics)
+                  - Occupation/Profession (Socio-economic role)
+                  - Family Status (Socio-economic role)
+                  - Legal Status/Discrimination (Socio-economic role)
+                  - Socio-economic Status (Socio-economic role)
+                  - Other
+              minItems: 1
+            intents:
+              type: array
+              items:
+                type: string
+                description: Intent behind the hate.
+                enum:
+                  - Discrimination (Discrimination/Prejudice)
+                  - Prejudice (Discrimination/Prejudice)
+                  - Humiliation (Discrimination/Prejudice)
+                  - Violence (Hostility/Aggression)
+                  - Hate (Hostility/Aggression)
+                  - Conflict (Hostility/Aggression)
+                  - Discord (Hostility/Aggression)
+                  - Manipulation (Social/Cultural Control)
+                  - Stereotyping (Social/Cultural Control)
+                  - Propaganda (Social/Cultural Control)
+                  - Exclusion (Social/Cultural Control)
+                  - Suppression (Social/Cultural Control)
+                  - Silencing (Social/Cultural Control)
+                  - Marginalization (Social/Cultural Control)
+                  - Other
+              minItems: 1
+            actions:
+              type: array
+              items:
+                type: string
+                description: Action taken as part of the hate.
+                enum:
+                  - Insults (Verbal/Written Expressions)
+                  - Defamation (Verbal/Written Expressions)
+                  - Provocation (Verbal/Written Expressions)
+                  - Violence (Physical Action)
+                  - Desecration (Physical Action)
+                  - Other
+              minItems: 1
+          required:
+            - targets
+            - intents
+            - actions
+          additionalProperties: false
+      required:
+        - hate_problems
+      additionalProperties: false
+    strict: true
+system_prompt: >-
+  You are an annotator using a 3-axis hate taxonomy. Choose zero or more leaves under each axis (target, intent_purpose, act_means). Prefer the most specific leaves.
+  The taxonomy is as follows:
+  Axes:
+    Target:
+      Demographics:
+        - Race/Ethnicity
+        - Nationality/Region/Citizenship
+        - Religion/Belief
+        - Gender/Sex/Sexual Orientation
+        - Disability
+        - Age
+        - Appearance
+      Socio-economic role:
+        - Occupation/Profession
+        - Family Status
+        - Legal Status/Discrimination
+        - Socio-economic Status
+    
+    Intent/Purpose:
+      Discrimination/Prejudice:
+        - Discrimination
+        - Prejudice
+        - Humiliation
+      Hostility/Aggression:
+        - Violence
+        - Hate
+        - Conflict
+        - Discord
+      Social/Cultural Control:
+        - Manipulation
+        - Stereotyping
+        - Propaganda
+        - Exclusion
+        - Suppression
+        - Silencing
+        - Marginalization
+    
+    Act/Means:
+      Verbal/Written Expressions:
+        - Insults
+        - Defamation
+        - Provocation
+      Physical Action:
+        - Violence
+        - Desecration
+  
+  You will be provided with an image and text. Analyze them together and identify any hate-related problems depicted in post based on the taxonomy above.
+
+user_prompt: |-
+  Meme text:
+  {text}

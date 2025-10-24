@@ -1,0 +1,52 @@
+seed: 0
+delay: 1
+model: gpt-5-mini-2025-08-07
+max_tokens: 1024
+temperature: 1.0
+response_format:
+  type: "json_schema"
+  json_schema:
+    name: problems_hate
+    schema:
+      type: object
+      properties:
+        hate_frames:
+          type: array
+          items:
+            type: object
+            properties:
+              frame:
+                type: string
+                description: Articulated hate frame.
+              rationale:
+                type: string
+                description: Explanation for why this frame is relevant.
+            required:
+              - frame
+              - rationale
+            additionalProperties: false
+            minItems: 1
+      required:
+        - hate_frames
+      additionalProperties: false
+system_prompt: >-
+  You are an expert linguistic assistant.
+  Frames of communication select particular aspects of an issue and make them salient in communicating a message.
+  Frames of communication are ubiquitous in social media discourse and can impact how people understand issues and, more importantly, how they form their opinions.
+  You will be tasked with identifying and articulating hate framings from input memes. 
+  Frames should be articulated correctly and they should not just state something factual. For example, "Women's bodies are often objectified and sexualized inappropriately" is not a frame but a factual statement. Instead, the frame here should be "Women's bodies are meant to be objectified and sexualized inappropriately."
+  For each frame you articulate in a meme, you should provide a rationale for why you think this frame is relevant to the meme.
+  The rationale should encompass the hate-related problems associated with the meme.
+  You will be given an input meme and the targets, intents, and actions associated with the meme.
+user_prompt: |-
+  Meme text:
+  {text}
+  Targets:
+  {targets}
+  Intents:
+  {intents}
+  Actions:
+  {actions}
+  Based on the above meme and the associated targets, intents, and actions, identify and articulate relevant hate frames.
+  Provide a rationale for each frame you identify, explaining why you think this frame is relevant to the meme.
+ 
